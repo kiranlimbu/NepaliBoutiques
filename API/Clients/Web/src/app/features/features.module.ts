@@ -5,9 +5,8 @@ import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
 import { RouterModule } from '@angular/router';
 import { FeaturedBoutiquesComponent } from './components/featured-boutiques/featured-boutiques.component';
 import { SocialFeedComponent } from './components/social-feed/social-feed.component';
-import { HeaderComponent } from './components/header/header.component';
 import { HeroSectionComponent } from './components/hero-section/hero-section.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -15,22 +14,19 @@ import { FooterComponent } from './components/footer/footer.component';
     LayoutPageComponent,
     FeaturedBoutiquesComponent,
     SocialFeedComponent,
-    HeaderComponent,
     HeroSectionComponent,
-    FooterComponent,
   ],
   imports: [
     CommonModule,
-    RouterModule, // for routing within features module
+    RouterModule,
+    SharedModule, // Add SharedModule import
   ],
   exports: [
     BoutiqueListComponent,
     LayoutPageComponent,
     FeaturedBoutiquesComponent,
-    HeaderComponent,
     HeroSectionComponent,
     SocialFeedComponent,
-    FooterComponent,
   ],
 })
 export class FeaturesModule {}

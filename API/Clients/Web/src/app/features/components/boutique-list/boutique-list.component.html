@@ -1,0 +1,76 @@
+<div class="boutique-list">
+  <div
+    class="boutique-card"
+    *ngFor="let boutique of boutiques; let i = index"
+    [ngClass]="{ 'even-row': i % 2 === 0, 'odd-row': i % 2 !== 0 }"
+  >
+    <!-- Left Section: Profile and Info -->
+    <div class="profile-section">
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: space-between;
+        "
+      >
+        <div>
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <img
+              [src]="boutique.profilePicture"
+              [alt]="boutique.name"
+              class="profile-picture"
+            />
+            <div class="profile-info">
+              <h3>{{ boutique.name }}</h3>
+              <p class="handle">
+                {{ boutique.name.toLowerCase().replace(" ", "") }}
+              </p>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 2rem">
+            <p class="description">{{ boutique.description }}</p>
+            <div>
+              <p class="contact">
+                <span style="font-size: 1.2rem; color: #4a3728">📞</span>
+                {{ boutique.contact }}
+              </p>
+              <p class="followers">
+                <span style="font-size: 1.2rem; color: #4a3728">{{
+                  boutique.followers | number
+                }}</span
+                >+ followers
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center">
+          <a
+            [href]="boutique.instagramLink"
+            target="_blank"
+            class="instagram-button"
+          >
+            Visit Instagram Profile
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section: Gallery -->
+    <div class="gallery-section">
+      <div class="gallery-grid">
+        <div class="gallery-item" *ngFor="let item of boutique.inventory">
+          <div class="gallery-background"></div>
+          <img [src]="item.imageUrl" [alt]="item.name" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display: flex; justify-content: center; margin-top: 4rem">
+    <button class="browse-btn">
+      <span>Browse Boutiques</span>
+    </button>
+  </div>
+</div>

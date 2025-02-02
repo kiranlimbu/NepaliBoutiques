@@ -1,20 +1,24 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FEATURED_BOUTIQUES } from '../../../../../assets/mocks/featured-boutiques.mock';
-import { BoutiqueFeatured } from '../../../models/boutique.model';
+import { BoutiqueService } from '../../../core/services/boutique.service';
+import { BoutiqueFeatured } from '../../../core/models/boutique.model';
 
 @Component({
   selector: 'app-featured-boutiques',
   templateUrl: './featured-boutiques.component.html',
-  styleUrls: ['./featured-boutiques.component.css']
+  styleUrls: ['./featured-boutiques.component.css'],
 })
 export class FeaturedBoutiquesComponent implements OnInit, OnDestroy {
   featuredBoutiques: BoutiqueFeatured[] = [];
   isPaused = false;
   private scrollInterval: any;
 
+  constructor(private boutiqueService: BoutiqueService) {}
+
   ngOnInit(): void {
-    this.featuredBoutiques = FEATURED_BOUTIQUES;
-    this.startAutoScroll();
+    this.boutiqueService.getFeaturedBoutiques().subscribe((boutiques) => {
+      this.featuredBoutiques = boutiques;
+      this.startAutoScroll();
+    });
   }
 
   ngOnDestroy(): void {
@@ -29,7 +33,10 @@ export class FeaturedBoutiquesComponent implements OnInit, OnDestroy {
         const container = document.querySelector('.carousel-track');
         if (container) {
           container.scrollLeft += 1;
-          if (container.scrollLeft >= (container.scrollWidth - container.clientWidth)) {
+          if (
+            container.scrollLeft >=
+            container.scrollWidth - container.clientWidth
+          ) {
             container.scrollLeft = 0;
           }
         }

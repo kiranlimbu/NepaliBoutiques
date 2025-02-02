@@ -17,3 +17,4 @@ C:\Users\Kiran\source\repos\NepaliBoutique\Infrastructure\obj\Debug\net8.0\refin
 C:\Users\Kiran\source\repos\NepaliBoutique\Infrastructure\obj\Debug\net8.0\Infrastructure.pdb
 C:\Users\Kiran\source\repos\NepaliBoutique\Infrastructure\obj\Debug\net8.0\Infrastructure.genruntimeconfig.cache
 C:\Users\Kiran\source\repos\NepaliBoutique\Infrastructure\obj\Debug\net8.0\ref\Infrastructure.dll
+C:\Users\Kiran\source\repos\NepaliBoutique\Infrastructure\obj\Debug\net8.0\Infrastructure.sourcelink.json
