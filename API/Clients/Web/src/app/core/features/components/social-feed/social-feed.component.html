@@ -1,0 +1,11 @@
+<div class="social-feed-container">
+  <div class="social-post" *ngIf="currentPost">
+    <div class="post-content">
+      <p class="comment">"{{currentPost.comment}}"</p>
+      <div class="post-meta">
+        <span class="user-name">{{currentPost.userName}}</span>
+        <span class="boutique-name">{{currentPost.boutiqueName}}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "VvU95uRhv47rQoyCrpomJLjSDLS4qwTVMcHADf1uAW+JVnMiLc7XVOyCp3v4XDQ+8z33GXZI4f+o+PX4czH9+A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\Core\\Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kiran\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

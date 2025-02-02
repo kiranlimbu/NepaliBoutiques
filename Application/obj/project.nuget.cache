@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "d7UtWTOHZPyS5cTQItjLxbnCIZYsm3Jesokr2EZntmkO20LBb0gd0s0xKs8w0LHCt5fOFYiPjEYK7hISWfmh3w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\Application\\Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kiran\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
+    "C:\\Users\\Kiran\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
+    "C:\\Users\\Kiran\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
+    "C:\\Users\\Kiran\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",
+    "C:\\Users\\Kiran\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\Kiran\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\Kiran\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\Kiran\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512"
+  ],
+  "logs": []
+}

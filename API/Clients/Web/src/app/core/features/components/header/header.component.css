@@ -1,0 +1,103 @@
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative; /* For absolute positioning of search bar */
+  margin: 0;
+  padding: 1rem 0; /* Add vertical padding instead of relying on margin */
+  background-color: #E0DACE; /* Optional: ensure background color */
+}
+
+.logo {
+  flex: 0 0 auto;
+  padding-left: 1rem;
+  z-index: 1; /* Ensure logo stays above search bar */
+  /* Add any specific logo styling here */
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  font-weight: 700; /* Using the bold weight for the logo */
+}
+
+.search-bar {
+  flex: 0 1 800px; /* Allow it to grow up to 800px */
+  /* min-width: 200px; Minimum width */
+  width: 40%; /* Default to 40% of container width */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* Ensure padding doesn't affect final width */
+}
+
+.auth-buttons {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 1rem;
+  padding-right: 1rem;
+  z-index: 1; /* Ensure buttons stay above search bar */
+}
+
+.login-btn,
+.signup-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap; /* Prevent button text from wrapping */
+  font-family: inherit; /* This will inherit the Inria Serif font */
+}
+
+.login-btn {
+  background-color: #A47758;
+  /* border: 1px solid #333; */
+}
+
+.signup-btn {
+  background-color: #33251b;
+  color: white;
+}
+
+/* Mobile menu button - hidden by default */
+.menu-button {
+  display: none;
+  padding-right: 1rem;
+  z-index: 1;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+  .search-bar {
+    position: static;
+    transform: none;
+    width: 200px;
+    margin: 0 1rem;
+  }
+
+  .auth-buttons {
+    display: none;
+  }
+
+  .menu-button {
+    display: block;
+  }
+
+  /* Show mobile menu when active */
+  .auth-buttons.mobile-active {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    flex-direction: column;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+}

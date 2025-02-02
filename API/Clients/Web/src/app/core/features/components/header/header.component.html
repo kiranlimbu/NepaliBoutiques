@@ -1,0 +1,13 @@
+<div class="header-content">
+    <div class="logo">NSF</div>
+    <div class="search-bar">
+      <input type="text" placeholder="search bar" />
+    </div>
+    <div class="auth-buttons" [class.mobile-active]="isMobileMenuOpen">
+      <button class="login-btn">LOG IN</button>
+      <button class="signup-btn">SIGN UP</button>
+    </div>
+    <button class="menu-button" (click)="toggleMobileMenu()">
+      ☰
+    </button>
+</div>
