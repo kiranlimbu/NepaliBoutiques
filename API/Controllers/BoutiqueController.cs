@@ -32,4 +32,10 @@ public class BoutiqueController : ControllerBase
     {
         return Ok(_featuredBoutiques);
     }
+
+    // [HttpGet("boutiquesWithInventory")]
+    // public ActionResult<IEnumerable<BoutiqueWithInventory>> GetBoutiquesWithInventory()
+    // {
+    //     return Ok(_boutiquesWithInventory);
+    // }
 } 

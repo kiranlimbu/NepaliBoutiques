@@ -15,20 +15,20 @@
 /* Featured Boutiques styles */
 .featured-content {
   background-color: white;
-  padding: 0;
+  margin-top: 4rem;
 }
 
 /* Main content styles */
 .main-content {
   max-width: 1200px;
-  margin: 2rem auto;
+  margin: 4rem auto 0;
   padding: 0 1rem;
 }
 
 /* Who Are We section styles */
 .about-us-container {
   max-width: 1200px;
-  margin: 4rem auto;
+  margin: 6rem auto 0;
   display: flex;
   align-items: flex-start;
   gap: 4rem;
@@ -65,6 +65,10 @@
     color: #666;
   }
 }
+
+.footer {
+  margin-top: 6rem;
+}
 /* Move info-boxes outside of who-are-we */
 .info-boxes {
   max-width: 1200px;
@@ -87,4 +91,25 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
+}
+
+.instagram-connect-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #e1306c; /* Instagram brand color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.instagram-connect-btn:hover {
+  background-color: #c13584;
+}
+
+.instagram-connect-btn i {
+  font-size: 1.25rem;
 }

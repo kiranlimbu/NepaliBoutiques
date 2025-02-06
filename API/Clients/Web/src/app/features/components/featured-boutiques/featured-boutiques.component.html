@@ -1,17 +1,29 @@
 <section class="editors-pick">
   <h2 class="title">Editor's Pick</h2>
-  <p class="subtitle">Showcasing the finest in Nepali craftsmanship and style</p>
+  <p class="subtitle">
+    Showcasing the finest in Nepali craftsmanship and style
+  </p>
 
   <div class="carousel-container">
-    <div class="carousel-track" 
-         (mouseenter)="onMouseEnter()" 
-         (mouseleave)="onMouseLeave()">
+    <div
+      class="carousel-track"
+      (mouseenter)="onMouseEnter()"
+      (mouseleave)="onMouseLeave()"
+    >
       <div class="boutique-card" *ngFor="let boutique of featuredBoutiques">
         <div class="card-content">
-          <img [src]="boutique.imageUrl" [alt]="boutique.name" class="featured-image">
+          <img
+            [src]="boutique.imageUrl"
+            [alt]="boutique.name"
+            class="featured-image"
+          />
           <div class="boutique-info">
             <div class="logo-container">
-              <img [src]="boutique.logoUrl" [alt]="boutique.name" class="boutique-logo">
+              <img
+                [src]="boutique.logoUrl"
+                [alt]="boutique.name"
+                class="boutique-logo"
+              />
             </div>
             <div class="text-content">
               <h3>{{ boutique.name }}</h3>
@@ -25,10 +37,18 @@
       <!-- Duplicate cards for infinite scroll effect -->
       <div class="boutique-card" *ngFor="let boutique of featuredBoutiques">
         <div class="card-content">
-          <img [src]="boutique.imageUrl" [alt]="boutique.name" class="featured-image">
+          <img
+            [src]="boutique.imageUrl"
+            [alt]="boutique.name"
+            class="featured-image"
+          />
           <div class="boutique-info">
             <div class="logo-container">
-              <img [src]="boutique.logoUrl" [alt]="boutique.name" class="boutique-logo">
+              <img
+                [src]="boutique.logoUrl"
+                [alt]="boutique.name"
+                class="boutique-logo"
+              />
             </div>
             <div class="text-content">
               <h3>{{ boutique.name }}</h3>
@@ -37,6 +57,17 @@
               </button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="social-feed-container">
+    <div class="social-post" *ngIf="currentPost">
+      <div class="post-content">
+        <p class="comment">"{{ currentPost.comment }}"</p>
+        <div class="post-meta">
+          <span class="user-name">{{ currentPost.userName }}</span>
+          <span class="boutique-name">{{ currentPost.boutiqueName }}</span>
         </div>
       </div>
     </div>

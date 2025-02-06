@@ -8,4 +8,5 @@ export interface InventoryItem {
   imageUrl: string;
   name: string;
   price: number;
-} 
+  // TODO: Add caption and timestamp and omit price
+}

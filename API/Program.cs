@@ -1,9 +1,18 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Add configuration sources
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables()  // Add environment variables
+    .AddUserSecrets<Program>(); // Add user secrets in development
+
 // Add minimal services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 
 // Add CORS configuration
 builder.Services.AddCors(options =>

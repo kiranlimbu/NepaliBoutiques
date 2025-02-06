@@ -1,42 +1,75 @@
 <footer class="footer">
-  <div class="logo">
+  <!-- <div class="logo">
     <span class="logo-text">NSF</span>
-  </div>
+  </div> -->
   <div class="footer-content">
     <!-- Logo and Description -->
-    <div class="footer-tagline">
-      <p class="description">
-        Explore the vibrant world of Nepali clothing from the comfort of your
-        home. From handcrafted designs to modern trends, find your style today!
-      </p>
+    <div class="footer-tagline column-large">
+      <ul>
+        <li>
+          <h2>Welcome to Nepali Style Finder!</h2>
+        </li>
+        <li>
+          <p class="description">
+            Explore the vibrant world of Nepali clothing from the comfort of
+            your home. From handcrafted designs to modern trends, find your
+            style today!
+          </p>
+        </li>
+      </ul>
     </div>
 
     <!-- Navigation Links -->
-    <div class="footer-nav">
+    <div class="footer-nav column-small">
       <ul>
+        <li><h2>Quick Links</h2></li>
         <li><a href="#">Home</a></li>
-        <li><a href="#">About us</a></li>
-        <li><a href="#">Featured</a></li>
+        <li><a href="#">Browse Boutiques</a></li>
+        <li>
+          <!-- Social Links -->
+          <div class="social-links">
+            <a href="#" aria-label="Facebook"
+              ><app-icon name="facebook"></app-icon
+            ></a>
+            <a href="#" aria-label="Instagram"
+              ><app-icon name="instagram"></app-icon
+            ></a>
+          </div>
+        </li>
       </ul>
     </div>
 
     <!-- Contact Info -->
-    <div class="footer-contact">
+    <div class="footer-contact column-large">
       <ul>
-        <li><a href="#">Contact us</a></li>
-        <li><a href="mailto:info@nsf.com">info&#64;nsf.com</a></li>
-        <li><a href="tel:+1222333999">+1 222 333 99</a></li>
+        <li><h2>Contact us</h2></li>
+        <li>
+          <p>
+            Do you know a Nepali boutique that deserves to be featured on our
+            page? Let us know, we'd love to hear your recommendations! If you
+            have any suggestions or feedback about this page, feel free to reach
+            out.
+          </p>
+
+          <p>
+            Are you a boutique owner who prefers not to be listed? No problem!
+            Just contact us, and we'll take care of it. If you have any concerns
+            or complaints about our site, please let us know. We're here to
+            serve and improve your experience.
+          </p>
+        </li>
+        <li>
+          <a href="mailto:nepali.style.finder@gmail.com" class="email-link">
+            <app-icon name="mail"></app-icon>
+            nepali.style.finder&#64;gmail.com
+          </a>
+        </li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="copyright">© 2024 nepalistylefinder. All rights reserved</p>
-    <!-- Social Links -->
-    <div class="social-links">
-      <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-      <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-    </div>
+    <p class="copyright">
+      © {{ currentYear }} nepalistylefinder. All rights reserved
+    </p>
   </div>
 </footer>

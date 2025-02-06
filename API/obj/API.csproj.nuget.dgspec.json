@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\API\\API.csproj": {}
+    "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\api\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\API\\API.csproj": {
+    "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\api\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\api\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\API\\API.csproj",
+        "projectPath": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\api\\API.csproj",
         "packagesPath": "C:\\Users\\Kiran\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\API\\obj\\",
+        "outputPath": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Kiran\\AppData\\Roaming\\NuGet\\NuGet.Config",

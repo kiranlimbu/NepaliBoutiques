@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BoutiqueService } from '../../../core/services/boutique.service';
 import { BoutiqueFeatured } from '../../../core/models/boutique.model';
+import { SocialPost } from '../../../core/models/social-post.model';
+import { SocialFeedService } from '../../../core/services/social-feed.service';
 
 @Component({
   selector: 'app-featured-boutiques',
@@ -11,13 +13,25 @@ export class FeaturedBoutiquesComponent implements OnInit, OnDestroy {
   featuredBoutiques: BoutiqueFeatured[] = [];
   isPaused = false;
   private scrollInterval: any;
+  // Social Feed
+  socialPosts: SocialPost[] = [];
+  currentPostIndex = 0;
+  private intervalId: any;
 
-  constructor(private boutiqueService: BoutiqueService) {}
+  constructor(
+    private boutiqueService: BoutiqueService,
+    private socialFeedService: SocialFeedService
+  ) {}
 
   ngOnInit(): void {
     this.boutiqueService.getFeaturedBoutiques().subscribe((boutiques) => {
       this.featuredBoutiques = boutiques;
       this.startAutoScroll();
+    });
+    // Social Feed
+    this.socialFeedService.getPosts().subscribe((posts) => {
+      this.socialPosts = posts;
+      this.startRotation();
     });
   }
 
@@ -50,5 +64,17 @@ export class FeaturedBoutiquesComponent implements OnInit, OnDestroy {
 
   onMouseLeave(): void {
     this.isPaused = false;
+  }
+
+  // Social Feed
+  private startRotation(): void {
+    this.intervalId = setInterval(() => {
+      this.currentPostIndex =
+        (this.currentPostIndex + 1) % this.socialPosts.length;
+    }, 5000); // Change post every 5 seconds
+  }
+
+  get currentPost(): SocialPost {
+    return this.socialPosts[this.currentPostIndex];
   }
 }
