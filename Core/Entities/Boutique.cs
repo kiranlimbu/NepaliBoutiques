@@ -1,41 +1,63 @@
 using Core.Abstractions;
 using Core.Events;
-
+using Core.Errors;
 namespace Core.Entities;
 
-public sealed class Boutique(int id, string name, string profilePicture, int followers, string description, string contact, string instagramLink) : Entity
+/// <summary>
+/// Represents the aggregate root for the Boutique entity.
+/// The Boutique entity serves as the entry point for managing related entities,
+/// such as InventoryItem and SocialPost, ensuring consistency and enforcing
+/// business rules across the aggregate.
+/// </summary>
+
+public sealed class Boutique : Entity
 {
-    public int Id { get; private set; } = id;
+    public int Id { get; private set; }
 
-    public string Name { get; private set; } = name;
+    public string Name { get; private set; }
 
-    public string ProfilePicture { get; private set; } = profilePicture;
+    public string ProfilePicture { get; private set; }
 
-    public int? Followers { get; private set; } = followers;
+    public int? Followers { get; private set; }
 
-    public string? Description { get; private set; } = description;
+    public string? Description { get; private set; }
 
-    public string? Contact { get; private set; } = contact;
+    public string? Contact { get; private set; }
 
-    public string? InstagramLink { get; private set; } = instagramLink;
+    public string? InstagramLink { get; private set; }
 
     public List<InventoryItem> Inventories { get; private set; } = [];
     public List<SocialPost> SocialPosts { get; private set; } = [];
 
+    private Boutique(int id, string name, string profilePicture, int followers, string description, string contact, string instagramLink) { 
+        Id = id;
+        Name = name;
+        ProfilePicture = profilePicture;
+        Followers = followers;
+        Description = description;
+        Contact = contact;
+        InstagramLink = instagramLink;
+    }
+
     /// <summary>
     /// Factory method to create a new Boutique instance.
     /// </summary>
-    public static Boutique Create(int id, string name, string profilePicture, int followers, string description, string contact, string instagramLink)
+    public static Result<Boutique> Create(int id, string name, string profilePicture, int followers, string description, string contact, string instagramLink)
     {
         // Add any validation or initialization logic here
-        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(profilePicture))
+        if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("Name and profile picture cannot be empty", $"{nameof(name)}, {nameof(profilePicture)}");
+            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueNameNull);
+        }
+
+        if (string.IsNullOrWhiteSpace(profilePicture))
+        {
+            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueProfilePictureNull);
         }
 
         var boutique = new Boutique(id, name, profilePicture, followers, description, contact, instagramLink);
         boutique.RaiseCoreEvent(new BoutiqueAddedCoreEvent(boutique));
-        return boutique;
+        return Result.Success(boutique);
     }
 
     /// <summary>
@@ -49,6 +71,17 @@ public sealed class Boutique(int id, string name, string profilePicture, int fol
         Description = updatedProperties.Description ?? Description;
         Contact = updatedProperties.Contact ?? Contact;
         InstagramLink = updatedProperties.InstagramLink ?? InstagramLink;
+
+        // Add any validation or initialization logic here
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueNameNull);
+        }
+
+        if (string.IsNullOrWhiteSpace(ProfilePicture))
+        {
+            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueProfilePictureNull);
+        }
 
         RaiseCoreEvent(new BoutiqueUpdatedCoreEvent(this));
         
@@ -65,13 +98,13 @@ public sealed class Boutique(int id, string name, string profilePicture, int fol
    {
         if (item == null)
         {
-            return Result.Failure(InventoryItemErrors.InventoryItemNull);
+            return Result.Failure(InventoryErrors.InventoryItemNull);
         }
 
         // Validate properties of the inventory item
         if (string.IsNullOrWhiteSpace(item.ImageUrl)) 
         {
-            return Result.Failure(InventoryItemErrors.ImageUrlNull);
+            return Result.Failure(InventoryErrors.ImageUrlNull);
         }
 
         Inventories.Add(item);
@@ -88,14 +121,14 @@ public sealed class Boutique(int id, string name, string profilePicture, int fol
    {
         if (items == null)
         {
-            return Result.Failure(InventoryItemErrors.InventoryItemNull);
+            return Result.Failure(InventoryErrors.InventoryItemNull);
         }
 
         foreach (var item in items)
         {
             if (string.IsNullOrWhiteSpace(item.ImageUrl)) 
             {
-                return Result.Failure(InventoryItemErrors.ImageUrlNull);
+                return Result.Failure(InventoryErrors.ImageUrlNull);
             }
             Inventories.Add(item);
         }
@@ -115,22 +148,38 @@ public sealed class Boutique(int id, string name, string profilePicture, int fol
        var item = Inventories.FirstOrDefault(i => i.Id == itemId);
        if (item == null)
        {
-           return Result.Failure(InventoryItemErrors.InventoryItemNotFound);
+           return Result.Failure(InventoryErrors.InventoryItemNotFound);
        }
         Inventories.Remove(item);
 
        return Result.Success();
    }
 
-   /// <summary>
-   /// Retrieves an inventory item by its ID.
-   /// </summary>
-   /// <param name="itemId">The ID of the inventory item to retrieve.</param>
-   /// <returns>The inventory item if found; otherwise, null.</returns>
-   ///    public InventoryItem? GetInventoryItem(int itemId)
-   ///    {
-   ///        return Inventories.FirstOrDefault(i => i.Id == itemId) ?? throw new InvalidOperationException("Item not found");
-   ///    }
+
+
+   public Result UpdateInventoryItem(int itemId, string? newImageUrl = null, string? newCaption = null)
+   {
+       var item = Inventories.FirstOrDefault(i => i.Id == itemId);
+       if (item == null)
+       {
+           return Result.Failure(InventoryErrors.InventoryItemNotFound);
+       }
+
+       // Update properties
+       if (newImageUrl != null)
+       {
+           item.ImageUrl = newImageUrl;
+       }
+       if (newCaption != null)
+       {
+           item.Caption = newCaption;
+       }
+
+       // Optionally raise an event or perform additional logic
+       RaiseCoreEvent(new InventoryItemUpdatedCoreEvent(item));
+
+       return Result.Success();
+   }
 
    /// <summary>
    /// Removes a social post from the boutique's social posts.
@@ -150,5 +199,4 @@ public sealed class Boutique(int id, string name, string profilePicture, int fol
 
         return Result.Success();
    }
-
 }

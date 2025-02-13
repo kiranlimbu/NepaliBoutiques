@@ -7,7 +7,7 @@ public abstract class Entity
     /// <summary>
     /// Gets the list of core events associated with this entity.
     /// </summary>
-    public IReadOnlyList<ICoreEvent> GetCoreEvents => _coreEvents.ToList();
+    public IReadOnlyList<ICoreEvent> CoreEvents => _coreEvents.AsReadOnly();
 
     /// <summary>
     /// Raises a core event to the entity.
