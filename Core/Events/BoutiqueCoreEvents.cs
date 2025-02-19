@@ -3,8 +3,8 @@ using Core.Entities;
 
 namespace Core.Events;
 
-public sealed record BoutiqueAddedCoreEvent(Boutique boutique) : ICoreEvent;
+public sealed record BoutiqueAddedCoreEvent(Boutique Boutique) : ICoreEvent;
 
-public sealed record BoutiqueUpdatedCoreEvent(Boutique boutique) : ICoreEvent;
+public sealed record BoutiqueUpdatedCoreEvent(Boutique Boutique) : ICoreEvent;
 
-
+public sealed record BoutiqueDeletedCoreEvent(Boutique Boutique) : ICoreEvent;

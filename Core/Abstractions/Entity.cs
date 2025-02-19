@@ -4,6 +4,8 @@ public abstract class Entity
 {
     private readonly List<ICoreEvent> _coreEvents = [];
 
+    // todo: add public UpdateAuditableEntity(CreatedBy, CreatedAt, LastModifiedBy, LastModifiedAt)
+
     /// <summary>
     /// Gets the list of core events associated with this entity.
     /// </summary>

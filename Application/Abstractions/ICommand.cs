@@ -1,0 +1,19 @@
+using MediatR;
+using Core.Abstractions;
+
+namespace Application.Abstractions;
+
+public interface ICommand : IRequest<Result>, IBaseCommand
+{
+
+}
+
+public interface ICommand<out TResponse> : IRequest<Result<TResponse>>, IBaseCommand
+{
+
+}
+
+public interface IBaseCommand 
+{
+
+}

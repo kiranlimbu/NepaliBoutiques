@@ -13,6 +13,7 @@ namespace Core.Entities;
 public sealed class Boutique : Entity
 {
     public int Id { get; private set; }
+    public int? OwnerId { get; private set; }
 
     public string Name { get; private set; }
 
@@ -29,8 +30,9 @@ public sealed class Boutique : Entity
     public List<InventoryItem> Inventories { get; private set; } = [];
     public List<SocialPost> SocialPosts { get; private set; } = [];
 
-    private Boutique(int id, string name, string profilePicture, int followers, string description, string contact, string instagramLink) { 
+    private Boutique(int id, int? ownerId, string name, string profilePicture, int followers, string description, string contact, string instagramLink) { 
         Id = id;
+        OwnerId = ownerId;
         Name = name;
         ProfilePicture = profilePicture;
         Followers = followers;
@@ -42,22 +44,27 @@ public sealed class Boutique : Entity
     /// <summary>
     /// Factory method to create a new Boutique instance.
     /// </summary>
-    public static Result<Boutique> Create(int id, string name, string profilePicture, int followers, string description, string contact, string instagramLink)
+    public static Boutique Create(int id, int? ownerId, string name, string profilePicture, int followers, string description, string contact, string instagramLink)
     {
         // Add any validation or initialization logic here
         if (string.IsNullOrWhiteSpace(name))
         {
-            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueNameNull);
+            throw new ArgumentException(BoutiqueErrors.BoutiqueNameNull.Code, nameof(name));
         }
 
         if (string.IsNullOrWhiteSpace(profilePicture))
         {
-            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueProfilePictureNull);
+            throw new ArgumentException(BoutiqueErrors.BoutiqueProfilePictureNull.Code, nameof(profilePicture));
         }
 
-        var boutique = new Boutique(id, name, profilePicture, followers, description, contact, instagramLink);
+        if (ownerId == null)
+        {
+            throw new ArgumentException(BoutiqueErrors.BoutiqueOwnerIdNull.Code, nameof(ownerId));
+        }
+
+        var boutique = new Boutique(id, ownerId, name, profilePicture, followers, description, contact, instagramLink);
         boutique.RaiseCoreEvent(new BoutiqueAddedCoreEvent(boutique));
-        return Result.Success(boutique);
+        return boutique;
     }
 
     /// <summary>
@@ -107,33 +114,14 @@ public sealed class Boutique : Entity
             return Result.Failure(InventoryErrors.ImageUrlNull);
         }
 
+        // Check if the item url already exists in the inventory
+        if (Inventories.Any(i => i.ImageUrl == item.ImageUrl))
+        {
+            return Result.Failure(InventoryErrors.ItemAlreadyExists);
+        }
+
         Inventories.Add(item);
         RaiseCoreEvent(new InventoryItemAddedCoreEvent(item));
-
-        return Result.Success();
-   }
-
-   /// <summary>
-   /// Adds multiple inventory items to the boutique's inventory.
-   /// </summary>
-   /// <param name="items">The collection of inventory items to add.</param>
-   public Result AddInventoryItems(IEnumerable<InventoryItem> items)
-   {
-        if (items == null)
-        {
-            return Result.Failure(InventoryErrors.InventoryItemNull);
-        }
-
-        foreach (var item in items)
-        {
-            if (string.IsNullOrWhiteSpace(item.ImageUrl)) 
-            {
-                return Result.Failure(InventoryErrors.ImageUrlNull);
-            }
-            Inventories.Add(item);
-        }
-
-        RaiseCoreEvent(new InventoryItemsAddedCoreEvent(items));
 
         return Result.Success();
    }
@@ -151,6 +139,8 @@ public sealed class Boutique : Entity
            return Result.Failure(InventoryErrors.InventoryItemNotFound);
        }
         Inventories.Remove(item);
+        // Raise the event
+        RaiseCoreEvent(new InventoryItemRemovedCoreEvent(item));
 
        return Result.Success();
    }

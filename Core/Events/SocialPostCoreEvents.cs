@@ -3,5 +3,5 @@ using Core.Entities;
 
 namespace Core.Events;
 
-public sealed record SocialPostRemovedCoreEvent(SocialPost post) : ICoreEvent;
+public sealed record SocialPostRemovedCoreEvent(SocialPost Post) : ICoreEvent;
 
