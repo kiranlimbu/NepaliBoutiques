@@ -3,7 +3,7 @@ using Core.Abstractions;
 using Core.Events;
 namespace Core.Entities;
 
-public sealed class SocialPost(int id, int boutiqueId, string username, string comment, DateTime timestamp) : Entity
+public sealed class SocialPost(int id, int boutiqueId, string username, string comment, DateTime timestamp) : BaseEntity
 {
     public int Id { get; private set; } = id;   
     public int BoutiqueId { get; private set; } = boutiqueId;

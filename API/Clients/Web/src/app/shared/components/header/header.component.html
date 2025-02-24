@@ -1,13 +1,21 @@
 <div class="header-content">
-    <div class="logo">NSF</div>
-    <div class="search-bar">
-      <input type="text" placeholder="search bar" />
+  <div class="logo">
+    <img
+      src="assets/images/Nepali_Boutique_Logo.png"
+      alt="Nepali Boutique Logo"
+      height="60"
+    />
+    <div class="text-container">
+      <span class="logo-text">Nepali Style Finder</span>
+      <span class="logo-slogan">AUTHENTIC NEPALI DESIGN</span>
     </div>
-    <div class="auth-buttons" [class.mobile-active]="isMobileMenuOpen">
-      <button class="login-btn">LOG IN</button>
-      <button class="signup-btn">SIGN UP</button>
-    </div>
-    <button class="menu-button" (click)="toggleMobileMenu()">
-      ☰
-    </button>
+  </div>
+  <div class="search-bar">
+    <input type="text" placeholder="search bar" />
+  </div>
+  <div class="auth-buttons" [class.mobile-active]="isMobileMenuOpen">
+    <button class="login-btn">LOG IN</button>
+    <button class="signup-btn">SIGN UP</button>
+  </div>
+  <button class="menu-button" (click)="toggleMobileMenu()">☰</button>
 </div>

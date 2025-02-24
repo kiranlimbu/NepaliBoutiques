@@ -32,6 +32,8 @@ internal sealed class AddBoutiqueCommandHandler : ICommandHandler<AddBoutiqueCom
             request.ProfilePicture,
             request.Followers,
             request.Description,
+            request.Category,
+            request.Location,
             request.Contact,
             request.InstagramLink);
 

@@ -6,17 +6,36 @@
   position: relative; /* For absolute positioning of search bar */
   margin: 0;
   padding: 1rem 0; /* Add vertical padding instead of relying on margin */
-  background-color: #E0DACE; /* Optional: ensure background color */
+  background-color: #e0dace; /* Optional: ensure background color */
 }
 
 .logo {
-  flex: 0 0 auto;
+  display: flex;
+  align-items: center; /* Center horizontally */
   padding-left: 1rem;
   z-index: 1; /* Ensure logo stays above search bar */
-  /* Add any specific logo styling here */
-  font-size: 1.8rem;
-  letter-spacing: 0.05em;
-  font-weight: 700; /* Using the bold weight for the logo */
+  text-align: center;
+
+  .text-container {
+    display: flex;
+    flex-direction: column; /* Stack logo text and slogan vertically */
+    justify-content: center; /* Center vertically */
+    align-items: flex-start; /* Align text to the left horizontally */
+    padding-left: 0.6rem;
+    line-height: 1;
+
+    .logo-text {
+      font-size: 1.5rem;
+      text-align: left; /* Align text to the left */
+      margin-top: 2px;
+    }
+
+    .logo-slogan {
+      font-size: 0.8rem;
+      text-align: left; /* Align text to the left */
+      margin-top: 4px;
+    }
+  }
 }
 
 .search-bar {
@@ -56,7 +75,7 @@
 }
 
 .login-btn {
-  background-color: #A47758;
+  background-color: #a47758;
   /* border: 1px solid #333; */
 }
 
@@ -98,6 +117,6 @@
     flex-direction: column;
     background: white;
     padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 }

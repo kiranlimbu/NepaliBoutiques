@@ -44,9 +44,6 @@ internal sealed class SearchBoutiqueByNameQueryHandler : IQueryHandler<SearchBou
                 Id,
                 Name,
                 ProfilePicture,
-                Followers,
-                Description,
-                Contact,
                 InstagramLink
             FROM Boutiques
             WHERE Name LIKE @Name

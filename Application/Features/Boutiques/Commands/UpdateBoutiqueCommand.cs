@@ -7,7 +7,9 @@ public record UpdateBoutiqueCommand(
     int OwnerId,
     string Name,
     string ProfilePicture,
-    int Followers,
+    int? Followers,
     string Description,
+    string Category,
+    string Location,
     string Contact,
-    string InstagramLink) : ICommand;
+    string? InstagramLink) : ICommand;

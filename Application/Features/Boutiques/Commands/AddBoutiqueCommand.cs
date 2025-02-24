@@ -6,7 +6,9 @@ public record AddBoutiqueCommand(
     int OwnerId,
     string Name, 
     string ProfilePicture, 
-    int Followers, 
-    string Description, 
+    int? Followers, 
+    string Description,
+    string Category,
+    string Location,
     string Contact, 
-    string InstagramLink) : ICommand<int>;
+    string? InstagramLink) : ICommand<int>;

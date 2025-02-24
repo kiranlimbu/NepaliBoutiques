@@ -4,7 +4,7 @@ using Core.Entities;
 using Core.Abstractions;
 using Core.Abstractions.Repositories;
 using Core.Errors;
-
+using Core.ValueObjects;
 namespace Application.Features.Users.Commands;
 
 internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, int>
@@ -38,15 +38,13 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
 
         // Create a new user entity with the provided registration details
         var newUser = User.Create(
-            0, // id is added by the database
-            request.Username, 
+            0, // id is added by the database 
             request.FirstName, 
             request.LastName, 
-            request.Email);
+            Email.Create(request.Email));
 
         // Register the user with the authentication service to obtain an identity ID
         var identityId = await _authenticationService.RegisterAsync(
-            request.Username, 
             request.FirstName, 
             request.LastName, 
             request.Email, 

@@ -22,7 +22,9 @@ internal sealed class GetFeaturedBoutiquesQueryHandler : IQueryHandler<GetFeatur
     }
 
     /// <summary>
-    /// Handles the query to get featured boutiques by executing a SQL query.
+    /// Handles the query to retrieve featured boutiques based on their recent social media activity.
+    /// The query selects boutiques that have social media posts within the last 14 days,
+    /// orders them by the most recent post date in descending order, and fetches the top 5 results.
     /// </summary>
     /// <param name="request">The query request.</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
@@ -38,9 +40,6 @@ internal sealed class GetFeaturedBoutiquesQueryHandler : IQueryHandler<GetFeatur
                 Id,
                 Name,
                 ProfilePicture,
-                Followers,
-                Description,
-                Contact,
                 InstagramLink
             FROM Boutiques
             -- Check if there are social posts in the last 14 days for each boutique

@@ -1,27 +1,25 @@
 using Core.Abstractions;
 using Core.Errors;
 using Core.Events;
-
+using Core.ValueObjects;
 
 namespace Core.Entities;
-public sealed class User : Entity
+public sealed class User : BaseEntity
 {
     private readonly List<Role> _roles = [];
 
-    private User(int id, string username, string firstName, string lastName, string email)
+    private User(int id, string firstName, string lastName, Email email)
     {
         Id = id;
-        Username = username;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
     }
     public int Id { get; private set; }
-    public string Username { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
-    public string Email { get; private set; }
+    public Email Email { get; private set; }
     public string IdentityId { get; private set; } = string.Empty;
 
     //TODO: Add these properties
@@ -31,37 +29,9 @@ public sealed class User : Entity
 
     public IReadOnlyList<Role> Roles => _roles.AsReadOnly();
 
-    public static User Create(int id, string username, string firstName, string lastName, string email)
+    public static User Create(int id, string firstName, string lastName, Email email)
     {
-        // validations
-        if (string.IsNullOrEmpty(username))
-        {
-            throw new ArgumentException(UserErrors.UsernameNull.Code, nameof(username));
-        }
-
-        if (string.IsNullOrEmpty(firstName))
-        {
-            throw new ArgumentException(UserErrors.FirstNameNull.Code, nameof(firstName));
-        }
-
-        if (string.IsNullOrEmpty(lastName))
-        {
-            throw new ArgumentException(UserErrors.LastNameNull.Code, nameof(lastName));
-        }
-
-        if (string.IsNullOrEmpty(email))
-        {
-            throw new ArgumentException(UserErrors.EmailNull.Code, nameof(email));
-        }
-
-        //TODO: Add email validation
-        // if (!email.IsValidEmail())
-        // {
-        //     throw new ArgumentException(UserErrors.InvalidEmail.Code, nameof(email));
-        // }
-        
-
-        var newUser = new User(id, username, firstName, lastName, email);
+        var newUser = new User(id, firstName, lastName, email);
         // raise events
         newUser.RaiseCoreEvent(new UserCreatedCoreEvent(newUser));
 

@@ -4,7 +4,7 @@ using Core.Events;
 
 namespace Core.Entities;
 
-public sealed class Role : Entity
+public sealed class Role
 {
     // predefined roles
     public static readonly Role Admin = new(1, "Admin");
@@ -21,6 +21,6 @@ public sealed class Role : Entity
     public int Id { get; private set; }
     public string Name { get; private set; }
 
-    public ICollection<User> Users { get; private set; } = new List<User>();
-    public ICollection<Permission> Permissions { get; private set; } = new List<Permission>();
+    public ICollection<User> Users { get; private set; } = [];
+    public ICollection<Permission> Permissions { get; private set; } = [];
 }

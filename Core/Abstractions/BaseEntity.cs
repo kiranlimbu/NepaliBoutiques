@@ -1,10 +1,16 @@
 namespace Core.Abstractions;
 
-public abstract class Entity
+public abstract class BaseEntity : IAuditable
 {
     private readonly List<ICoreEvent> _coreEvents = [];
 
-    // todo: add public UpdateAuditableEntity(CreatedBy, CreatedAt, LastModifiedBy, LastModifiedAt)
+    /// <summary>
+    /// Gets or sets the user who created/last modified the entity.
+    /// </summary>
+    public string CreatedBy { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public string LastModifiedBy { get; set; } = string.Empty;
+    public DateTime LastModifiedAt { get; set; }
 
     /// <summary>
     /// Gets the list of core events associated with this entity.

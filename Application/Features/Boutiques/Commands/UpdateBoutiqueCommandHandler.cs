@@ -32,10 +32,13 @@ internal sealed class UpdateBoutiqueCommandHandler : ICommandHandler<UpdateBouti
             request.ProfilePicture,
             request.Followers,
             request.Description,
+            request.Category,
+            request.Location,
             request.Contact,
             request.InstagramLink);
 
         boutique.UpdateBoutique(updatedBoutique);
+        // this updates the boutique
         _boutiqueRepository.Update(boutique);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

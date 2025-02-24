@@ -2,7 +2,7 @@ using Core.Abstractions;
 
 namespace Core.Entities;
 
-public sealed class InventoryItem(int id, int boutiqueId, string imageUrl, string caption, DateTime timestamp) : Entity
+public sealed class InventoryItem(int id, int boutiqueId, string imageUrl, string caption, DateTime timestamp) : BaseEntity
 {
     public int Id { get; private set; } = id;
     public int BoutiqueId { get; private set; } = boutiqueId;

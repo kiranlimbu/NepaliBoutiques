@@ -10,33 +10,31 @@ namespace Core.Entities;
 /// business rules across the aggregate.
 /// </summary>
 
-public sealed class Boutique : Entity
+public sealed class Boutique : BaseEntity
 {
     public int Id { get; private set; }
+    // OwnerId is optional because initially the boutique will be created by the system
     public int? OwnerId { get; private set; }
-
     public string Name { get; private set; }
-
     public string ProfilePicture { get; private set; }
-
     public int? Followers { get; private set; }
-
-    public string? Description { get; private set; }
-
-    public string? Contact { get; private set; }
-
+    public string Description { get; private set; }
+    public string Category { get; private set; }
+    public string Location { get; private set; }
+    public string Contact { get; private set; }
     public string? InstagramLink { get; private set; }
-
     public List<InventoryItem> Inventories { get; private set; } = [];
     public List<SocialPost> SocialPosts { get; private set; } = [];
 
-    private Boutique(int id, int? ownerId, string name, string profilePicture, int followers, string description, string contact, string instagramLink) { 
+    private Boutique(int id, int? ownerId, string name, string profilePicture, int? followers, string description, string category, string location, string contact, string? instagramLink) { 
         Id = id;
         OwnerId = ownerId;
         Name = name;
         ProfilePicture = profilePicture;
         Followers = followers;
         Description = description;
+        Category = category;
+        Location = location;
         Contact = contact;
         InstagramLink = instagramLink;
     }
@@ -44,26 +42,22 @@ public sealed class Boutique : Entity
     /// <summary>
     /// Factory method to create a new Boutique instance.
     /// </summary>
-    public static Boutique Create(int id, int? ownerId, string name, string profilePicture, int followers, string description, string contact, string instagramLink)
+    public static Boutique Create(int id, int? ownerId, string name, string profilePicture, int? followers, string description, string category, string location, string contact, string? instagramLink)
     {
-        // Add any validation or initialization logic here
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException(BoutiqueErrors.BoutiqueNameNull.Code, nameof(name));
-        }
-
-        if (string.IsNullOrWhiteSpace(profilePicture))
-        {
-            throw new ArgumentException(BoutiqueErrors.BoutiqueProfilePictureNull.Code, nameof(profilePicture));
-        }
-
-        if (ownerId == null)
+        // Add business logic here: "does this make sense in the context of the business rules?"
+        // when creating a boutique through the API, the ownerId is required
+        if (ownerId == null || ownerId == 0)
         {
             throw new ArgumentException(BoutiqueErrors.BoutiqueOwnerIdNull.Code, nameof(ownerId));
         }
 
-        var boutique = new Boutique(id, ownerId, name, profilePicture, followers, description, contact, instagramLink);
+        // create a boutique
+        var boutique = new Boutique(id, ownerId, name, profilePicture, followers, description, category, location, contact, instagramLink);
+
+        // raise the event
         boutique.RaiseCoreEvent(new BoutiqueAddedCoreEvent(boutique));
+
+        // return the boutique
         return boutique;
     }
 
@@ -72,26 +66,16 @@ public sealed class Boutique : Entity
     /// </summary>
     public Result<Boutique> UpdateBoutique(Boutique updatedProperties)
     {
-        Name = updatedProperties.Name ?? Name;
-        ProfilePicture = updatedProperties.ProfilePicture ?? ProfilePicture;
-        Followers = updatedProperties.Followers ?? Followers;
-        Description = updatedProperties.Description ?? Description;
-        Contact = updatedProperties.Contact ?? Contact;
-        InstagramLink = updatedProperties.InstagramLink ?? InstagramLink;
-
-        // Add any validation or initialization logic here
-        if (string.IsNullOrWhiteSpace(Name))
+        // apply business logic here
+        if (updatedProperties.OwnerId == null || updatedProperties.OwnerId == 0)
         {
-            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueNameNull);
+            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueOwnerIdNull);
         }
 
-        if (string.IsNullOrWhiteSpace(ProfilePicture))
-        {
-            return Result.Failure<Boutique>(BoutiqueErrors.BoutiqueProfilePictureNull);
-        }
-
+        // raise the event
         RaiseCoreEvent(new BoutiqueUpdatedCoreEvent(this));
         
+        // return the boutique
         return Result.Success(this);
     }
 
@@ -108,21 +92,15 @@ public sealed class Boutique : Entity
             return Result.Failure(InventoryErrors.InventoryItemNull);
         }
 
-        // Validate properties of the inventory item
-        if (string.IsNullOrWhiteSpace(item.ImageUrl)) 
-        {
-            return Result.Failure(InventoryErrors.ImageUrlNull);
-        }
+        // apply business logic here
 
-        // Check if the item url already exists in the inventory
-        if (Inventories.Any(i => i.ImageUrl == item.ImageUrl))
-        {
-            return Result.Failure(InventoryErrors.ItemAlreadyExists);
-        }
-
+        // add the item to the inventory
         Inventories.Add(item);
+
+        // raise the event
         RaiseCoreEvent(new InventoryItemAddedCoreEvent(item));
 
+        // return the result
         return Result.Success();
    }
 
@@ -147,25 +125,17 @@ public sealed class Boutique : Entity
 
 
 
-   public Result UpdateInventoryItem(int itemId, string? newImageUrl = null, string? newCaption = null)
+   public Result UpdateInventoryItem(InventoryItem updatedItem)
    {
-       var item = Inventories.FirstOrDefault(i => i.Id == itemId);
+       var item = Inventories.FirstOrDefault(i => i.Id == updatedItem.Id);
        if (item == null)
        {
            return Result.Failure(InventoryErrors.InventoryItemNotFound);
        }
 
-       // Update properties
-       if (newImageUrl != null)
-       {
-           item.ImageUrl = newImageUrl;
-       }
-       if (newCaption != null)
-       {
-           item.Caption = newCaption;
-       }
+       // apply business logic here
 
-       // Optionally raise an event or perform additional logic
+       // raise the event
        RaiseCoreEvent(new InventoryItemUpdatedCoreEvent(item));
 
        return Result.Success();
