@@ -29,7 +29,7 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
     public async Task<Result<int>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         // Check if a user with the provided email already exists in the repository
-        var user = await _userRepository.GetByEmailAsync(request.Email);
+        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
         if (user is not null)
         {
             // Return a failure result if the user already exists

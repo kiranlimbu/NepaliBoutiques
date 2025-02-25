@@ -10,7 +10,7 @@ public sealed class Role
     public static readonly Role Admin = new(1, "Admin");
     public static readonly Role RegisteredUser = new(2, "Registered User");
     public static readonly Role BoutiqueOwner = new(3, "Boutique Owner");
-    public static readonly Role Customer = new(4, "Tester");
+    public static readonly Role Tester = new(4, "Tester");
 
     public Role(int id, string name)
     {

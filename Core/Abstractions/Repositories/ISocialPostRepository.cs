@@ -7,7 +7,7 @@ namespace Core.Abstractions.Repositories;
 /// </summary>
 public interface ISocialPostRepository
 {
-    Task<SocialPost?> GetByIdAsync(int id);
-    Task<IEnumerable<SocialPost>> GetByBoutiqueIdAsync(int boutiqueId);
+    Task<SocialPost?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<IEnumerable<SocialPost>> GetByBoutiqueIdAsync(int boutiqueId, CancellationToken cancellationToken = default);
     void Delete(int id);
 }

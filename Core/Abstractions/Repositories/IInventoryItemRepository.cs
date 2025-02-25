@@ -7,10 +7,10 @@ namespace Core.Abstractions.Repositories;
 /// </summary>
 public interface IInventoryItemRepository
 {
-    Task<InventoryItem?> GetByIdAsync(int id);
-    Task<IEnumerable<InventoryItem>> GetByBoutiqueIdAsync(int boutiqueId);
+    Task<InventoryItem?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<IEnumerable<InventoryItem>> GetByBoutiqueIdAsync(int boutiqueId, CancellationToken cancellationToken = default);
+    Task AddRangeAsync(IEnumerable<InventoryItem> inventoryItems, CancellationToken cancellationToken = default);
     void Add(InventoryItem inventoryItem);
-    Task AddRangeAsync(IEnumerable<InventoryItem> inventoryItems);
     void Update(InventoryItem inventoryItem);
     void Delete(int id);
 }

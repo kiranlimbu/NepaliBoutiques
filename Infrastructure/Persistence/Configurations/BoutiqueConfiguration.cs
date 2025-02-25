@@ -40,6 +40,11 @@ public class BoutiqueConfiguration : IEntityTypeConfiguration<Boutique>
             .IsUnique();
         builder.HasIndex(b => b.Category);
         builder.HasIndex(b => b.Location);
+        // Configures the 'Version' property as a concurrency token using SQL Server's row versioning.
+        // This helps prevent race conditions during updates by ensuring that the record hasn't been modified
+        // by another transaction. The database will automatically update this value on each modification.
+        // Useful for implementing optimistic concurrency control.
+        builder.Property<uint>("Version").IsRowVersion();
     }
 }
 

@@ -23,13 +23,13 @@ internal sealed class UpdateInventoryItemCommandHandler : ICommandHandler<Update
     public async Task<Result> Handle(UpdateInventoryItemCommand request, CancellationToken cancellationToken)
     {
         // check if the item exists
-        var item = await _inventoryItemRepository.GetByIdAsync(request.Item.Id);
+        var item = await _inventoryItemRepository.GetByIdAsync(request.Item.Id, cancellationToken);
         if (item is null)
         {
             return Result.Failure(InventoryErrors.InventoryItemNotFound);
         }
         // check if the related boutique exists
-        var boutique = await _boutiqueRepository.GetByIdAsync(item.BoutiqueId);
+        var boutique = await _boutiqueRepository.GetByIdAsync(item.BoutiqueId, cancellationToken);
         if (boutique is null)
         {
             return Result.Failure(InventoryErrors.BoutiqueNotFound);

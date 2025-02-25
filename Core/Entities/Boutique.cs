@@ -12,7 +12,6 @@ namespace Core.Entities;
 
 public sealed class Boutique : BaseEntity
 {
-    public int Id { get; private set; }
     // OwnerId is optional because initially the boutique will be created by the system
     public int? OwnerId { get; private set; }
     public string Name { get; private set; }
@@ -26,8 +25,8 @@ public sealed class Boutique : BaseEntity
     public List<InventoryItem> Inventories { get; private set; } = [];
     public List<SocialPost> SocialPosts { get; private set; } = [];
 
-    private Boutique(int id, int? ownerId, string name, string profilePicture, int? followers, string description, string category, string location, string contact, string? instagramLink) { 
-        Id = id;
+    private Boutique(int id, int? ownerId, string name, string profilePicture, int? followers, string description, string category, string location, string contact, string? instagramLink) : base(id)
+    {
         OwnerId = ownerId;
         Name = name;
         ProfilePicture = profilePicture;

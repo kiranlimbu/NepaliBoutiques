@@ -28,7 +28,7 @@ internal sealed class AddInventoryItemsCommandHandler : ICommandHandler<AddInven
     public async Task<Result<IEnumerable<int>>> Handle(AddInventoryItemsCommand request, CancellationToken cancellationToken)
     {
         // Attempt to retrieve the boutique by its ID
-        var boutique = await _boutiqueRepository.GetByIdAsync(request.Items.First().BoutiqueId);
+        var boutique = await _boutiqueRepository.GetByIdAsync(request.Items.First().BoutiqueId, cancellationToken);
         if (boutique == null)
         {
             // Return failure if the boutique is not found
@@ -68,7 +68,7 @@ internal sealed class AddInventoryItemsCommandHandler : ICommandHandler<AddInven
             return Result.Failure<IEnumerable<int>>(InventoryErrors.NoItemsAdded);
         }
         // Batch add items to the repository
-        await _inventoryItemRepository.AddRangeAsync(addedItems);
+        await _inventoryItemRepository.AddRangeAsync(addedItems, cancellationToken);
         // Commit the transaction
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

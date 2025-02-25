@@ -2,7 +2,17 @@ namespace Core.Abstractions;
 
 public abstract class BaseEntity : IAuditable
 {
+    
     private readonly List<ICoreEvent> _coreEvents = [];
+
+
+    protected BaseEntity(int id)
+    {
+        Id = id;
+    }
+
+    // represents the unique identifier for the entity
+    public int Id { get; init; }
 
     /// <summary>
     /// Gets or sets the user who created/last modified the entity.
@@ -15,7 +25,7 @@ public abstract class BaseEntity : IAuditable
     /// <summary>
     /// Gets the list of core events associated with this entity.
     /// </summary>
-    public IReadOnlyList<ICoreEvent> CoreEvents => _coreEvents.AsReadOnly();
+    public IReadOnlyList<ICoreEvent> GetCoreEvents() => _coreEvents.ToList();
 
     /// <summary>
     /// Raises a core event to the entity.
