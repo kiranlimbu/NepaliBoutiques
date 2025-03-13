@@ -15,4 +15,9 @@ internal sealed class UserRepository : BaseRepository<User>, IUserRepository
     {
         return await _context.Set<User>().SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
+
+    public async Task<IEnumerable<string>> GetUserPermissionsAsync(int userId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<User>().Where(u => u.Id == userId).SelectMany(u => u.Roles.SelectMany(r => r.Permissions.Select(p => p.Name))).ToListAsync(cancellationToken);
+    }
 }

@@ -10,6 +10,7 @@ public static class InventoryErrors
     public static Error ItemAlreadyExists { get; } = new Error("InventoryItem_Duplicate", "Item with this url already exists");
     public static Error BoutiqueNotFound { get; } = new Error("Inventory_BoutiqueNotFound", "The boutique associated with the inventory item was not found.");
     public static Error NoItemsAdded { get; } = new Error("Inventory_NoItemsAdded", "No items were added");
+    public static Error InventoryItemIdRequired { get; } = new Error("InventoryItem_IdRequired", "Inventory item ID is required");
 }
 
 

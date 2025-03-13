@@ -1,5 +1,6 @@
 using Core.Abstractions.Repositories;
 using Core.Entities;
+using Infrastructure.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;

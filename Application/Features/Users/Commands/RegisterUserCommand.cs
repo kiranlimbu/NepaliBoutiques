@@ -6,6 +6,5 @@ public sealed record RegisterUserCommand(
     string FirstName,
     string LastName,
     string Email,
-    string Password,
-    string ConfirmPassword
+    string Password
 ) : ICommand<int>;

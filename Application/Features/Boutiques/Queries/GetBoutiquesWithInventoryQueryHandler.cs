@@ -49,7 +49,7 @@ internal sealed class GetBoutiquesWithInventoryQueryHandler : IQueryHandler<GetB
             i.Id,
             i.ImageUrl,
             i.Caption,
-            i.Timestamp
+            i.CreatedAt
         FROM Boutiques b
         LEFT JOIN (
             SELECT 
@@ -57,13 +57,13 @@ internal sealed class GetBoutiquesWithInventoryQueryHandler : IQueryHandler<GetB
                 i1.BoutiqueId,
                 i1.ImageUrl,
                 i1.Caption,
-                i1.Timestamp
+                i1.CreatedAt
             FROM InventoryItems i1
             WHERE i1.Id IN (
                 SELECT TOP 3 i2.Id  -- Select the top 3 inventory items based on the most recent timestamp
                 FROM InventoryItems i2
                 WHERE i2.BoutiqueId = i1.BoutiqueId  -- Ensure the inventory items belong to the same boutique
-                ORDER BY i2.Timestamp DESC           -- Order by the most recent timestamp
+                ORDER BY i2.CreatedAt DESC           -- Order by the most recent timestamp
             )
         ) i ON b.Id = i.BoutiqueId  -- Join boutiques with their inventory items
         ORDER BY b.Id               -- Order the results by boutique ID

@@ -84,17 +84,17 @@ public sealed class Boutique : BaseEntity
    /// </summary>
    /// <param name="item">The inventory item to add.</param>
    /// <returns>A Result indicating the success or failure of the operation.</returns>
-   public Result AddInventoryItem(InventoryItem item)
+   public Result AddInventoryItem(int boutiqueId, string imageUrl, string caption)
    {
-        if (item == null)
+        if (boutiqueId == 0)
         {
-            return Result.Failure(InventoryErrors.InventoryItemNull);
+            return Result.Failure(InventoryErrors.BoutiqueNotFound);
         }
 
         // apply business logic here
 
         // add the item to the inventory
-        Inventories.Add(item);
+        var item = InventoryItem.Create(0, boutiqueId, imageUrl, caption);
 
         // raise the event
         RaiseCoreEvent(new InventoryItemAddedCoreEvent(item));

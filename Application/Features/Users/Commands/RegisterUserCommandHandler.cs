@@ -39,24 +39,23 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
         // Create a new user entity with the provided registration details
         var newUser = User.Create(
             0, // id is added by the database 
-            request.FirstName, 
-            request.LastName, 
+            request.FirstName,
+            request.LastName,
             Email.Create(request.Email));
 
         // Register the user with the authentication service to obtain an identity ID
         var identityId = await _authenticationService.RegisterAsync(
-            request.FirstName, 
-            request.LastName, 
-            request.Email, 
-            request.Password, 
-            request.ConfirmPassword, 
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            request.Password,
             cancellationToken);
 
-        // TODO: Handle the identityId failure case
-        // if (identityId.IsFailure)
-        // {
-        //     return Result.Failure(identityId.Error);
-        // }
+
+        if (string.IsNullOrEmpty(identityId))
+        {
+            return Result.Failure<int>(UserErrors.FailedToRegister);
+        }
 
         // Set the identity ID for the newly created user
         newUser.SetIdentityId(identityId);
@@ -69,5 +68,5 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
 
         // Return a success result with the new user's ID
         return Result.Success(newUser.Id);
-    }   
+    }
 }

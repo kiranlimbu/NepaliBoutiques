@@ -3,11 +3,15 @@ using Core.Abstractions;
 using Application.Abstractions;
 using MediatR;
 using Application.Common.Exceptions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Core.Entities;
+
+
 namespace Infrastructure.Persistence.Database;
 public sealed class NepaliBoutiqueDbContext : DbContext, IUnitOfWork
 {
     private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly IPublisher _publisher; 
+    private readonly IPublisher _publisher;
     // we are not using the generic DbContextOptions<T> here because we are not using the DbContextOptionsBuilder<T>
     // also this also allows us to used multiple DbContexts in the future
     public NepaliBoutiqueDbContext(DbContextOptions options, IDateTimeProvider dateTimeProvider, IPublisher publisher) : base(options)
@@ -42,13 +46,13 @@ public sealed class NepaliBoutiqueDbContext : DbContext, IUnitOfWork
             {
                 switch (entry.State)
                 {
-                case EntityState.Added:
-                    entry.Entity.CreatedAt = _dateTimeProvider.UtcNow;
-                    // TODO: get the current user
-                    entry.Entity.CreatedBy = "System";
-                    break;
-                case EntityState.Modified:
-                    entry.Entity.LastModifiedAt = _dateTimeProvider.UtcNow;
+                    case EntityState.Added:
+                        entry.Entity.CreatedAt = _dateTimeProvider.UtcNow;
+                        // TODO: get the current user
+                        entry.Entity.CreatedBy = "System";
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.LastModifiedAt = _dateTimeProvider.UtcNow;
                         // TODO: get the current user
                         entry.Entity.LastModifiedBy = "System";
                         break;
@@ -72,7 +76,7 @@ public sealed class NepaliBoutiqueDbContext : DbContext, IUnitOfWork
         var coreEvents = ChangeTracker
             .Entries<BaseEntity>()
             .Select(e => e.Entity)
-            .SelectMany(e => 
+            .SelectMany(e =>
             {
                 var coreEvents = e.GetCoreEvents();
                 e.ClearCoreEvents();

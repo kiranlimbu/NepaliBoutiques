@@ -42,15 +42,18 @@ internal sealed class AddInventoryItemsCommandHandler : ICommandHandler<AddInven
         foreach (var item in request.Items)
         {
             // Create a new inventory item with a temporary ID
-            var inventoryItem = new InventoryItem(
-                0, // Id will be set by database
+            var inventoryItem = InventoryItem.Create(
+                0,
                 item.BoutiqueId, 
                 item.ImageUrl, 
-                item.Caption, 
-                DateTime.UtcNow);
+                item.Caption);
 
             // Attempt to add the inventory item to the boutique
-            var result = boutique.AddInventoryItem(inventoryItem);
+            var result = boutique.AddInventoryItem(
+                item.BoutiqueId, 
+                item.ImageUrl, 
+                item.Caption);
+                
             if (result.IsFailure)
             {
                 // Collect error codes for failed additions

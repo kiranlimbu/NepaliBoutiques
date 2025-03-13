@@ -18,10 +18,20 @@ public class AddBoutiqueCommandValidator : AbstractValidator<AddBoutiqueCommand>
             .NotEmpty(); // check for null or empty, both are not allowed
             
         RuleFor(b => b.Description)
-            .NotNull(); // check for only null, empty "" is allowed
+            .NotNull() // check for only null, empty "" is allowed
+            .MaximumLength(1000);
+
+        RuleFor(b => b.Category)
+            .NotEmpty()
+            .MaximumLength(100);
+
+        RuleFor(b => b.Location)
+            .NotEmpty()
+            .MaximumLength(200);
 
         RuleFor(b => b.Contact)
-            .NotNull(); // check for only null, empty "" is allowed
+            .NotNull() // check for only null, empty "" is allowed
+            .MaximumLength(200);
 
     }
 }

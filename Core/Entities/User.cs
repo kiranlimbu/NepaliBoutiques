@@ -1,5 +1,4 @@
 using Core.Abstractions;
-using Core.Errors;
 using Core.Events;
 using Core.ValueObjects;
 
@@ -52,5 +51,5 @@ public sealed class User : BaseEntity
     {
         _roles.Remove(role);
     }
-    
+
 }

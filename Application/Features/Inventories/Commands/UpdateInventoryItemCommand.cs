@@ -1,6 +1,6 @@
 using Application.Abstractions;
-using Core.Entities;
+using Application.Features.Inventories.Models;
 
 namespace Application.Features.Inventories.Commands;
 
-public record UpdateInventoryItemCommand(InventoryItem Item) : ICommand;
+public record UpdateInventoryItemCommand(InventoryItemModel Item) : ICommand;

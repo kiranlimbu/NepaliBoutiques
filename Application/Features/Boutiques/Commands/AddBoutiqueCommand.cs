@@ -3,6 +3,7 @@ using Application.Abstractions;
 namespace Application.Features.Boutiques.Commands;
 
 public record AddBoutiqueCommand(
+    int? Id,
     int OwnerId,
     string Name, 
     string ProfilePicture, 

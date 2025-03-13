@@ -1,3 +1,8 @@
+using API.Extensions;
+using Application;
+using Infrastructure;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add configuration sources
@@ -8,12 +13,16 @@ builder.Configuration
     .AddEnvironmentVariables()  // Add environment variables
     .AddUserSecrets<Program>(); // Add user secrets in development
 
-// Add minimal services
+// Add services
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient();
 
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddHttpClient();
 // Add CORS configuration
 builder.Services.AddCors(options =>
 {
@@ -29,9 +38,21 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Minimal middleware
-app.UseSwagger();
-app.UseSwaggerUI();
+// middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
+    app.ApplyMigrations();
+    // add seed/mock data
+    app.AddSeedData(); // Run this only first time to populate the database with mock data
+}
+
+app.UseCustomExceptionHandler();
+
+// app.UseAuthentication();
+// app.UseAuthorization();
 
 app.UseCors("CorsPolicy");
 app.MapControllers();

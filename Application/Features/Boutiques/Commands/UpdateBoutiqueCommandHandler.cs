@@ -19,7 +19,8 @@ internal sealed class UpdateBoutiqueCommandHandler : ICommandHandler<UpdateBouti
 
     public async Task<Result> Handle(UpdateBoutiqueCommand request, CancellationToken cancellationToken)
     {
-        var boutique = await _boutiqueRepository.GetByIdAsync(request.Id);
+        // check if the boutique exists
+        var boutique = await _boutiqueRepository.GetByIdAsync(request.Id, cancellationToken);
         if (boutique is null)
         {
             return Result.Failure(BoutiqueErrors.BoutiqueNotFound);

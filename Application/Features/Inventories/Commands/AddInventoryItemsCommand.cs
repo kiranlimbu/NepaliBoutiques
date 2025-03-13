@@ -1,5 +1,5 @@
 using Application.Abstractions;
-using Core.Entities;
+using Application.Features.Inventories.Models;
 
 namespace Application.Features.Inventories.Commands;
 
@@ -11,22 +11,13 @@ public class AddInventoryItemsCommand : ICommand<IEnumerable<int>>
     /// <summary>
     /// Gets the list of inventory items to be added.
     /// </summary>
-    public List<InventoryItem> Items { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AddInventoryItemsCommand"/> class with a single inventory item.
-    /// </summary>
-    /// <param name="singleItem">The single inventory item to add.</param>
-    public AddInventoryItemsCommand(InventoryItem singleItem)
-    {
-        Items = [singleItem];
-    }
+    public List<InventoryItemModel> Items { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AddInventoryItemsCommand"/> class with a list of inventory items.
     /// </summary>
     /// <param name="items">The list of inventory items to add.</param>
-    public AddInventoryItemsCommand(List<InventoryItem> items)
+    public AddInventoryItemsCommand(List<InventoryItemModel> items)
     {
         Items = items;
     }

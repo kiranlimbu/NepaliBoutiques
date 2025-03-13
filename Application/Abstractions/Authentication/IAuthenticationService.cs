@@ -7,6 +7,5 @@ public interface IAuthenticationService
         string lastName, 
         string email, 
         string password, 
-        string confirmPassword, 
         CancellationToken cancellationToken = default);
 }

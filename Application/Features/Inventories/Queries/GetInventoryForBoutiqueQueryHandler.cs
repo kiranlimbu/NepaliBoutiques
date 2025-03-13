@@ -35,20 +35,20 @@ internal sealed class GetInventoryForBoutiqueQueryHandler : IQueryHandler<GetInv
                 Id,
                 ImageUrl,
                 Caption,
-                Timestamp
+                CreatedAt
             FROM InventoryItems
             WHERE BoutiqueId = @BoutiqueId
-            ORDER BY Timestamp DESC
+            ORDER BY CreatedAt DESC
             OFFSET @Offset ROWS FETCH NEXT @Limit ROWS ONLY
         """;
 
         // Execute the query with the provided boutique ID and retrieve matching inventory items
         var inventoryItems = await connection.QueryAsync<InventoryItemResponse>(
             sql, 
-            new { 
-                BoutiqueId = request.BoutiqueId, 
-                Offset = request.Offset, 
-                Limit = request.Limit 
+            new {
+                request.BoutiqueId, 
+                request.Offset, 
+                request.Limit 
             }
         );
     

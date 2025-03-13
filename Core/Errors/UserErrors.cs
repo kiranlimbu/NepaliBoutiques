@@ -13,4 +13,5 @@ public static class UserErrors
     public static Error EmailAlreadyTaken { get; } = new Error("Email_Already_Taken", "Email is already taken");
     public static Error InvalidCredentials { get; } = new Error("Invalid_Credentials", "Invalid credentials provided");
     public static Error UserNotFound { get; } = new Error("User_NotFound", "User not found");
+    public static Error FailedToRegister { get; } = new Error("Failed_To_Register", "Failed to register user");
 }

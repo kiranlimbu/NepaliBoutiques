@@ -50,7 +50,7 @@ internal sealed class SearchBoutiqueByLocationQueryHandler : IQueryHandler<Searc
         """;
         
         // Execute the query with the provided location parameter and retrieve matching boutiques
-        var boutiques = await connection.QueryAsync<BoutiqueResponse>(sql, new { Location = request.Location });
+        var boutiques = await connection.QueryAsync<BoutiqueResponse>(sql, new { request.Location });
 
         // Return the result as a list
         return boutiques.ToList();

@@ -22,8 +22,12 @@ internal sealed class UpdateInventoryItemCommandHandler : ICommandHandler<Update
 
     public async Task<Result> Handle(UpdateInventoryItemCommand request, CancellationToken cancellationToken)
     {
+        if (request.Item.Id is null)
+        {
+            return Result.Failure(InventoryErrors.InventoryItemIdRequired);
+        }
         // check if the item exists
-        var item = await _inventoryItemRepository.GetByIdAsync(request.Item.Id, cancellationToken);
+        var item = await _inventoryItemRepository.GetByIdAsync(request.Item.Id.Value, cancellationToken);
         if (item is null)
         {
             return Result.Failure(InventoryErrors.InventoryItemNotFound);
@@ -34,8 +38,14 @@ internal sealed class UpdateInventoryItemCommandHandler : ICommandHandler<Update
         {
             return Result.Failure(InventoryErrors.BoutiqueNotFound);
         }
+        // this creates a required data type for update
+        var updatedItem = InventoryItem.Create(
+            item.Id,
+            item.BoutiqueId,
+            request.Item.ImageUrl,
+            request.Item.Caption);
         // update the item
-        boutique.UpdateInventoryItem(request.Item);
+        boutique.UpdateInventoryItem(updatedItem);
         // save the changes to the repository
         _inventoryItemRepository.Update(item);
         // save the changes to the database

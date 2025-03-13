@@ -19,8 +19,5 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
             .EmailAddress();
         RuleFor(x => x.Password)
             .NotEmpty().MinimumLength(8);
-        RuleFor(x => x.ConfirmPassword)
-            .NotEmpty()
-            .Equal(x => x.Password);
     }
 }

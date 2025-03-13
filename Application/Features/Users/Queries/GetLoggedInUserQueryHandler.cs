@@ -47,7 +47,7 @@ internal sealed class GetLoggedInUserQueryHandler : IQueryHandler<GetLoggedInUse
         // Execute the query with the current user's identity ID and retrieve the user details
         var user = await connection.QueryFirstOrDefaultAsync<UserResponse>(
             sql, 
-            new { IdentityId = _userContext.IdentityId });
+            new { _userContext.IdentityId });
 
         // Check if the user was found and return a failure result if not
         if (user is null)

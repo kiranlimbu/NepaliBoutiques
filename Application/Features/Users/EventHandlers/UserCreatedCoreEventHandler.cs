@@ -21,11 +21,11 @@ public sealed class UserCreatedCoreEventHandler : INotificationHandler<UserCreat
         _userRepository = userRepository;
         _emailService = emailService;
     }
-    
+
     public async Task Handle(UserCreatedCoreEvent notification, CancellationToken cancellationToken)
     {
         // get the user from the repository
-        var user = await _userRepository.GetByIdAsync(notification.User.Id);
+        var user = await _userRepository.GetByIdAsync(notification.User.Id, cancellationToken);
         if (user is null)
         {
             // this will never happen

@@ -1,6 +1,6 @@
 using FluentValidation;
 using Application.Features.Inventories.Commands;
-using Core.Entities;
+using Application.Features.Inventories.Models;
 namespace Application.Features.Inventories.Validators;
 
 /// <summary>
@@ -23,7 +23,7 @@ public class AddInventoryItemsCommandValidator : AbstractValidator<AddInventoryI
 /// <summary>
 /// Validator for individual InventoryItem.
 /// </summary>
-public class InventoryItemValidator : AbstractValidator<InventoryItem>
+public class InventoryItemValidator : AbstractValidator<InventoryItemModel>
 {
     public InventoryItemValidator()
     {
