@@ -73,19 +73,19 @@ public sealed class Boutique : BaseEntity
 
         // raise the event
         RaiseCoreEvent(new BoutiqueUpdatedCoreEvent(this));
-        
+
         // return the boutique
         return Result.Success(this);
     }
 
-   
-   /// <summary>
-   /// Adds a new inventory item to the boutique's inventory.
-   /// </summary>
-   /// <param name="item">The inventory item to add.</param>
-   /// <returns>A Result indicating the success or failure of the operation.</returns>
-   public Result AddInventoryItem(int boutiqueId, string imageUrl, string caption)
-   {
+
+    /// <summary>
+    /// Adds a new inventory item to the boutique's inventory.
+    /// </summary>
+    /// <param name="item">The inventory item to add.</param>
+    /// <returns>A Result indicating the success or failure of the operation.</returns>
+    public Result AddInventoryItem(int boutiqueId, string imageUrl, string caption)
+    {
         if (boutiqueId == 0)
         {
             return Result.Failure(InventoryErrors.BoutiqueNotFound);
@@ -101,52 +101,52 @@ public sealed class Boutique : BaseEntity
 
         // return the result
         return Result.Success();
-   }
+    }
 
-   /// <summary>
-   /// Removes an inventory item from the boutique's inventory.
-   /// </summary>
-   /// <param name="itemId">The ID of the inventory item to remove.</param>
-   /// <returns>True if the item was removed; otherwise, false.</returns>
-   public Result RemoveInventoryItem(int itemId)
-   {
-       var item = Inventories.FirstOrDefault(i => i.Id == itemId);
-       if (item == null)
-       {
-           return Result.Failure(InventoryErrors.InventoryItemNotFound);
-       }
+    /// <summary>
+    /// Removes an inventory item from the boutique's inventory.
+    /// </summary>
+    /// <param name="itemId">The ID of the inventory item to remove.</param>
+    /// <returns>True if the item was removed; otherwise, false.</returns>
+    public Result RemoveInventoryItem(int itemId)
+    {
+        var item = Inventories.FirstOrDefault(i => i.Id == itemId);
+        if (item == null)
+        {
+            return Result.Failure(InventoryErrors.InventoryItemNotFound);
+        }
         Inventories.Remove(item);
         // Raise the event
         RaiseCoreEvent(new InventoryItemRemovedCoreEvent(item));
 
-       return Result.Success();
-   }
+        return Result.Success();
+    }
 
 
 
-   public Result UpdateInventoryItem(InventoryItem updatedItem)
-   {
-       var item = Inventories.FirstOrDefault(i => i.Id == updatedItem.Id);
-       if (item == null)
-       {
-           return Result.Failure(InventoryErrors.InventoryItemNotFound);
-       }
+    public Result UpdateInventoryItem(InventoryItem updatedItem)
+    {
+        var item = Inventories.FirstOrDefault(i => i.Id == updatedItem.Id);
+        if (item == null)
+        {
+            return Result.Failure(InventoryErrors.InventoryItemNotFound);
+        }
 
-       // apply business logic here
+        // apply business logic here
 
-       // raise the event
-       RaiseCoreEvent(new InventoryItemUpdatedCoreEvent(item));
+        // raise the event
+        RaiseCoreEvent(new InventoryItemUpdatedCoreEvent(item));
 
-       return Result.Success();
-   }
+        return Result.Success();
+    }
 
-   /// <summary>
-   /// Removes a social post from the boutique's social posts.
-   /// </summary>
-   /// <param name="postId">The ID of the social post to remove.</param>
-   /// <returns>True if the post was removed; otherwise, false.</returns>
-   public Result RemoveSocialPost(int postId)
-   {
+    /// <summary>
+    /// Removes a social post from the boutique's social posts.
+    /// </summary>
+    /// <param name="postId">The ID of the social post to remove.</param>
+    /// <returns>True if the post was removed; otherwise, false.</returns>
+    public Result RemoveSocialPost(int postId)
+    {
         var post = SocialPosts.FirstOrDefault(p => p.Id == postId);
         if (post == null)
         {
@@ -157,5 +157,5 @@ public sealed class Boutique : BaseEntity
         RaiseCoreEvent(new SocialPostRemovedCoreEvent(post));
 
         return Result.Success();
-   }
+    }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "P0ivCqU6i6ujvIcXv7FP2/KAHHzzDq3Ln/v9r/SmZ/W587yIaxtaGgFXtMiX5KJU7wObQDoZodIBzx0m40wiVQ==",
+  "dgSpecHash": "VYqD5pmhssetUkyvCkeiuB1zvSL6uFtq/4eGk+XaPDiB68c+62H+SGjWG0RpsNUEcmftsLVDB2XnYiZxZovjQQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\API\\API.csproj",
+  "projectFilePath": "C:\\Users\\Kiran\\source\\repos\\NepaliBoutique\\api\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Kiran\\.nuget\\packages\\asp.versioning.abstractions\\8.1.0\\asp.versioning.abstractions.8.1.0.nupkg.sha512",
     "C:\\Users\\Kiran\\.nuget\\packages\\asp.versioning.http\\8.1.0\\asp.versioning.http.8.1.0.nupkg.sha512",

@@ -4,7 +4,7 @@ using Core.ValueObjects;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 
-namespace Infrastructure.AuthenticationService;
+namespace Infrastructure.Authentication;
 
 
 /// <summary>

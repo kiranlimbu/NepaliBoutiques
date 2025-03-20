@@ -11,15 +11,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Authentication;
 
-public class JwtService : IJwtService
+internal sealed class JwtService : IJwtService
 {
-    private readonly IConfiguration _configuration;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserRepository _userRepository;
     private readonly JwtSettings _jwtSettings;
-    public JwtService(IConfiguration configuration, UserManager<ApplicationUser> userManager, JwtSettings jwtSettings, IUserRepository userRepository)
+    public JwtService(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings, IUserRepository userRepository)
     {
-        _configuration = configuration;
         _userManager = userManager;
         _jwtSettings = jwtSettings;
         _userRepository = userRepository;
@@ -44,9 +42,9 @@ public class JwtService : IJwtService
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id), // IdentityId
-            new Claim("UserId", user.UserId.ToString()), // Entity UserId
+            new(ClaimTypes.Email, email),
+            new(ClaimTypes.NameIdentifier, user.Id), // IdentityId
+            new("UserId", user.UserId.ToString()), // Entity UserId
         };
 
         foreach (var role in userRoles)

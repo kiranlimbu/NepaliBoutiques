@@ -46,7 +46,7 @@ if (app.Environment.IsDevelopment())
 
     app.ApplyMigrations();
     // add seed/mock data
-    app.AddSeedData(); // Run this only first time to populate the database with mock data
+    // app.AddSeedData(); // Run this only first time to populate the database with mock data
 }
 
 app.UseCustomExceptionHandler();

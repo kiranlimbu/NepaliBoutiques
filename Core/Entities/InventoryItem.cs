@@ -22,5 +22,5 @@ public sealed class InventoryItem : BaseEntity
 
         return newInventoryItem;
     }
-    
+
 }

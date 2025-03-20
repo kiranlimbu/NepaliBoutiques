@@ -9,6 +9,12 @@ using Core.Abstractions.Repositories;
 using Core.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Identity;
+using Infrastructure.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Application.Abstractions.Authentication;
+using Microsoft.AspNetCore.Http;
 
 
 namespace Infrastructure;
@@ -63,6 +69,39 @@ public static class DependencyInjection
         })
         .AddEntityFrameworkStores<IdentityDbContext>()
         .AddDefaultTokenProviders();
+
+        // Add JWT Configuration
+        var jwtSettings = new JwtSettings();
+        configuration.GetSection(nameof(JwtSettings)).Bind(jwtSettings);
+        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+        // Register JwtSettings as a singleton
+        services.AddSingleton(jwtSettings);
+
+        // Add Authentication and Authorization
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+
+            };
+        });
+
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IUserContext, UserContext>();
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services.AddScoped<IBoutiqueRepository, BoutiqueRepository>();
         services.AddScoped<ISocialPostRepository, SocialPostRepository>();

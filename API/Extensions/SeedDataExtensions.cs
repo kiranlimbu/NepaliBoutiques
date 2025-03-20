@@ -15,84 +15,105 @@ public static class SeedDataExtensions
 
         var faker = new Faker();
 
-        // Create fake users
-        var users = new Faker<Core.Entities.User>()
-            .CustomInstantiator(f =>
+        // first, check if we already have users in the database
+        var userCount = connection.ExecuteScalar<int>("SELECT COUNT(*) FROM Users");
+        if (userCount == 0)
+        {
+            // Create fake users
+            var users = new Faker<Core.Entities.User>()
+                .CustomInstantiator(f =>
+                {
+                    var user = Core.Entities.User.Create(
+                        id: f.IndexFaker + 1,
+                        firstName: f.Person.FirstName,
+                        lastName: f.Person.LastName,
+                        email: Email.Create(f.Internet.Email())
+                    );
+                    user.SetIdentityId($"{f.IndexFaker + 1}_{f.Person.FirstName}_{f.Person.LastName}_{f.Internet.Email()}");
+                    return user;
+                })
+                .Generate(10);
+
+            // Insert users into database
+            var userSql = @"INSERT INTO Users (FirstName, LastName, Email, IdentityId, CreatedAt, CreatedBy, LastModifiedAt, LastModifiedBy)
+                VALUES (@FirstName, @LastName, @Email, @IdentityId, @CreatedAt, @CreatedBy, @LastModifiedAt, @LastModifiedBy)";
+
+            foreach (var user in users)
             {
-                var user = Core.Entities.User.Create(
+                connection.Execute(userSql, new
+                {
+                    user.FirstName,
+                    user.LastName,
+                    Email = user.Email.Value, // convert the email to a string
+                    user.IdentityId,
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = "Seed",
+                    LastModifiedAt = DateTime.UtcNow,
+                    LastModifiedBy = "Seed"
+                });
+            }
+        }
+
+        // Get user IDs directly from the database without deserializing
+        var userIds = connection.Query<int>("SELECT Id FROM Users").ToList();
+
+        // Check if boutiques already exist
+        var boutiqueCount = connection.ExecuteScalar<int>("SELECT COUNT(*) FROM Boutiques");
+        if (boutiqueCount < 10)
+        {
+            // Create fake boutiques
+            var boutiques = new Faker<Core.Entities.Boutique>()
+                .CustomInstantiator(f => Core.Entities.Boutique.Create(
                     id: f.IndexFaker + 1,
-                    firstName: f.Person.FirstName,
-                    lastName: f.Person.LastName,
-                    email: Email.Create(f.Internet.Email())
-                );
-                user.SetIdentityId($"{f.IndexFaker + 1}_{f.Person.FirstName}_{f.Person.LastName}_{f.Internet.Email()}");
-                return user;
-            })
-            .Generate(10);
+                    ownerId: f.PickRandom(userIds),
+                    name: f.Company.CompanyName(),
+                    profilePicture: $"https://source.unsplash.com/random/500x500/?fashion, boutique",
+                    followers: f.Random.Int(0, 10000),
+                    description: f.Lorem.Paragraph(),
+                    category: f.Commerce.Categories(1)[0],
+                    location: f.Address.City(),
+                    contact: f.Phone.PhoneNumber(),
+                    instagramLink: f.Internet.Url()
+                ))
+                .Generate(10);
 
-        // Insert users into database
-        var userSql = @"INSERT INTO Users (FirstName, LastName, Email, IdentityId, CreatedAt, CreatedBy)
-                VALUES (@FirstName, @LastName, @Email, @IdentityId, @CreatedAt, @CreatedBy)";
+            // Insert boutiques into database
+            var sql = @"INSERT INTO Boutiques (OwnerId, Name, ProfilePicture, Followers, Description, Category, Location, Contact, InstagramLink, CreatedAt, CreatedBy, LastModifiedAt, LastModifiedBy, Version)
+                VALUES (@OwnerId, @Name, @ProfilePicture, @Followers, @Description, @Category, @Location, @Contact, @InstagramLink, @CreatedAt, @CreatedBy, @LastModifiedAt, @LastModifiedBy, @Version)";
 
-        foreach (var user in users)
-        {
-            connection.Execute(userSql, new
+            foreach (var boutique in boutiques)
             {
-                user.FirstName,
-                user.LastName,
-                user.Email,
-                user.IdentityId,
-                CreatedAt = DateTime.UtcNow,
-                CreatedBy = "Seed"
-            });
+                connection.Execute(sql, new
+                {
+                    boutique.OwnerId,
+                    boutique.Name,
+                    boutique.ProfilePicture,
+                    boutique.Followers,
+                    boutique.Description,
+                    boutique.Category,
+                    boutique.Location,
+                    boutique.Contact,
+                    boutique.InstagramLink,
+                    CreatedAt = DateTime.UtcNow,
+                    CreatedBy = "Seed",
+                    LastModifiedAt = DateTime.UtcNow,
+                    LastModifiedBy = "Seed",
+                    Version = 1
+                });
+            }
+
         }
 
-        // Create fake boutiques
-        var boutiques = new Faker<Core.Entities.Boutique>()
-            .CustomInstantiator(f => Core.Entities.Boutique.Create(
-                id: f.IndexFaker + 1,
-                ownerId: f.PickRandom(users).Id,
-                name: f.Company.CompanyName(),
-                profilePicture: $"https://source.unsplash.com/random/500x500/?fashion, boutique",
-                followers: f.Random.Int(0, 10000),
-                description: f.Lorem.Paragraph(),
-                category: f.Commerce.Categories(1)[0],
-                location: f.Address.City(),
-                contact: f.Phone.PhoneNumber(),
-                instagramLink: f.Internet.Url()
-            ))
-            .Generate(10);
-
-        // Insert boutiques into database
-        var sql = @"INSERT INTO Boutiques (OwnerId, Name, ProfilePicture, Followers, Description, Category, Location, Contact, InstagramLink, CreatedAt, CreatedBy)
-                VALUES (@OwnerId, @Name, @ProfilePicture, @Followers, @Description, @Category, @Location, @Contact, @InstagramLink, @CreatedAt, @CreatedBy)";
-
-        foreach (var boutique in boutiques)
-        {
-            connection.Execute(sql, new
-            {
-                boutique.OwnerId,
-                boutique.Name,
-                boutique.ProfilePicture,
-                boutique.Followers,
-                boutique.Description,
-                boutique.Category,
-                boutique.Location,
-                boutique.Contact,
-                boutique.InstagramLink,
-                CreatedAt = DateTime.UtcNow,
-                CreatedBy = "Seed"
-            });
-        }
-
+        // Get boutique IDs directly without deserializing
+        var boutiqueIds = connection.Query<int>("SELECT Id FROM Boutiques").ToList();
         // Create 5 inventory items for each boutique
         var inventoryItems = new List<Core.Entities.InventoryItem>();
-        foreach (var boutique in boutiques)
+        foreach (var boutiqueId in boutiqueIds)
         {
             var boutiqueInventoryItems = new Faker<Core.Entities.InventoryItem>()
                 .CustomInstantiator(f => Core.Entities.InventoryItem.Create(
                     id: f.IndexFaker + 1,
-                    boutiqueId: boutique.Id,
+                    boutiqueId: boutiqueId,
                     imageUrl: $"https://source.unsplash.com/random/500x500/?fashion,clothing",
                     caption: f.Commerce.ProductDescription()
                 ))
@@ -102,8 +123,8 @@ public static class SeedDataExtensions
         }
 
         // Insert inventory items into database
-        var inventorySql = @"INSERT INTO InventoryItems (BoutiqueId, ImageUrl, Caption, CreatedAt, CreatedBy)
-                VALUES (@BoutiqueId, @ImageUrl, @Caption, @CreatedAt, @CreatedBy)";
+        var inventorySql = @"INSERT INTO InventoryItems (BoutiqueId, ImageUrl, Caption, CreatedAt, CreatedBy, LastModifiedAt, LastModifiedBy)
+                VALUES (@BoutiqueId, @ImageUrl, @Caption, @CreatedAt, @CreatedBy, @LastModifiedAt, @LastModifiedBy)";
 
         foreach (var item in inventoryItems)
         {
@@ -113,18 +134,20 @@ public static class SeedDataExtensions
                 item.ImageUrl,
                 item.Caption,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = "Seed"
+                CreatedBy = "Seed",
+                LastModifiedAt = DateTime.UtcNow,
+                LastModifiedBy = "Seed"
             });
         }
 
         // Create fake social posts
         var socialPosts = new List<Core.Entities.SocialPost>();
-        foreach (var boutique in boutiques)
+        foreach (var boutiqueId in boutiqueIds)
         {
             var boutiqueSocialPosts = new Faker<Core.Entities.SocialPost>()
                 .CustomInstantiator(f => Core.Entities.SocialPost.Create(
                     id: f.IndexFaker + 1,
-                    boutiqueId: boutique.Id,
+                    boutiqueId: boutiqueId,
                     username: f.Person.FullName,
                     comment: f.Lorem.Sentence(),
                     timestamp: f.Date.Past()
@@ -135,8 +158,8 @@ public static class SeedDataExtensions
         }
 
         // Insert social posts into database
-        var socialPostSql = @"INSERT INTO SocialPosts (BoutiqueId, Username, Comment, Timestamp, CreatedAt, CreatedBy)
-                VALUES (@BoutiqueId, @Username, @Comment, @Timestamp, @CreatedAt, @CreatedBy)";
+        var socialPostSql = @"INSERT INTO SocialPosts (BoutiqueId, Username, Comment, Timestamp, CreatedAt, CreatedBy, LastModifiedAt, LastModifiedBy)
+                VALUES (@BoutiqueId, @Username, @Comment, @Timestamp, @CreatedAt, @CreatedBy, @LastModifiedAt, @LastModifiedBy)";
 
         foreach (var post in socialPosts)
         {
@@ -147,7 +170,9 @@ public static class SeedDataExtensions
                 post.Comment,
                 post.Timestamp,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = "Seed"
+                CreatedBy = "Seed",
+                LastModifiedAt = DateTime.UtcNow,
+                LastModifiedBy = "Seed"
             });
         }
     }

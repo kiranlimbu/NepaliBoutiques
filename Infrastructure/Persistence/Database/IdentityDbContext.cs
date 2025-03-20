@@ -6,7 +6,7 @@ namespace Infrastructure.Persistence.Database;
 
 public sealed class IdentityDbContext : IdentityDbContext<ApplicationUser>
 {
-    public IdentityDbContext(DbContextOptions options) : base(options)
+    public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
     {
 
     }
